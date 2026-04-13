@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BKR - Experiencias Exclusivas</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --pink-color: #f2b3c1;
+            --pink-transparent: rgba(242, 179, 193, 0.1);
+            --bg-dark: #0a0a0a;
+            --text-light: #ffffff;
+            --transition-speed: 0.4s;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+        }
+
+        body, html {
+            width: 100%;
+            height: 100%;
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+        }
+
+        a {
+            text-decoration: none;
+            color: var(--text-light);
+            transition: color 0.3s;
+        }
+
+        a:hover {
+            color: var(--pink-color);
+        }
+        #loader-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--bg-dark);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999; 
+            transition: opacity 0.8s ease, visibility 0.8s ease;
+        }
+
+        .loader-logo-container {
+            width: 150px; 
+            margin-bottom: 30px;
+        }
+        
+        .loader-logo-container img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .progress-bar-container {
+            width: 150px;
+            height: 6px;
+            background-color: #222;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            width: 0%;
+            height: 100%;
+            background-color: var(--pink-color);
+            border-radius: 10px;
+            animation: load 2.5s ease-in-out forwards;
+        }
+
+        @keyframes load {
+            0% { width: 0%; }
+            50% { width: 60%; }
+            100% { width: 100%; }
+        }
+
+        #main-screen {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 1s ease;
+            overflow: hidden;
+        }
+
+        #bg-video {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw; 
+            height: 100vh; 
+            object-fit: cover; 
+            z-index: 1;
+            filter: brightness(60%) desaturate(20%); 
+        }
+
+        .ui-element {
+            position: absolute;
+            z-index: 10; 
+        }
+        .left-socials {
+            position: absolute;
+            top: 50%;
+            left: 40px;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+            font-size: 1.5rem;
+        }
+        
+        .left-socials i { 
+            color: var(--pink-color); 
+            cursor: pointer; 
+            transition: transform 0.2s;
+        }
+
+        .left-socials i:hover {
+            transform: scale(1.2);
+        }
+        .top-header {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center; 
+            padding: 30px 40px;
+            z-index: 10;
+        }
+
+        .main-logo-container {
+            width: 100px; 
+        }
+        
+        .main-logo-container img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .top-right-menu {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            font-size: 1.3rem;
+            color: var(--pink-color);
+        }
+        
+        .top-right-menu i {
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        
+        .top-right-menu i:hover {
+            transform: scale(1.1);
+        }
+        
+        .top-right-menu .fa-bars {
+            font-size: 1.6rem; 
+            margin-left: 10px;
+        }
+        #side-menu {
+            position: fixed;
+            top: 0;
+            right: -320px;
+            width: 280px;
+            height: 100%;
+            
+            background: rgba(255, 255, 255, 0.03); 
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            
+            border-left: 1px solid rgba(242, 179, 193, 0.2); 
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            
+            box-shadow: -15px 0px 40px rgba(0,0,0,0.5);
+            
+            z-index: 1000;
+            transition: right var(--transition-speed) ease-in-out;
+            display: flex;
+            flex-direction: column;
+            padding: 80px 40px 40px 40px;
+            overflow: hidden; 
+        }
+
+        #side-menu.open {
+            right: 0; 
+        }
+
+        #side-menu::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0) 50%, rgba(242, 179, 193, 0.05) 100%);
+            z-index: -1;
+            animation: liquidFlow 10s infinite ease-in-out;
+        }
+
+        @keyframes liquidFlow {
+            0% { transform: scale(1) translate(0, 0); opacity: 0.3; }
+            50% { transform: scale(1.1) translate(-2%, 2%); opacity: 0.5; }
+            100% { transform: scale(1) translate(0, 0); opacity: 0.3; }
+        }
+
+        .close-menu-btn {
+            position: absolute;
+            top: 30px;
+            right: 40px;
+            font-size: 1.5rem;
+            color: var(--pink-color);
+            cursor: pointer;
+        }
+
+        .side-nav-links {
+            display: flex;
+            flex-direction: column;
+            text-align: right;
+            gap: 25px;
+            font-size: 0.95rem;
+            letter-spacing: 1.5px;
+            font-weight: 300;
+        }
+        
+        .side-nav-links a:hover {
+            color: var(--pink-color);
+            text-shadow: 0 0 10px rgba(242, 179, 193, 0.6);
+        }
+
+        .bottom-nav {
+            position: absolute;
+            bottom: 40px;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            z-index: 10;
+        }
+
+        #modal-overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(5px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 50; 
+        }
+
+        .modal-box {
+            background-color: #111111;
+            padding: 45px 55px;
+            border-radius: 15px;
+            text-align: center;
+            max-width: 420px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.9);
+        }
+
+        .modal-box p {
+            font-size: 1.1rem;
+            line-height: 1.5;
+            margin-bottom: 30px;
+        }
+        .modal-box p span {
+            color: var(--pink-color);
+            font-weight: bold;
+        }
+
+        .btn-unete {
+            background-color: var(--pink-color);
+            color: var(--bg-dark);
+            border: none;
+            padding: 14px 30px;
+            font-size: 1.2rem;
+            font-weight: 900;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            margin-bottom: 18px;
+            transition: transform 0.2s;
+        }
+
+        .btn-unete:hover {
+            transform: scale(1.04);
+        }
+
+        .btn-cerrar {
+            background: none;
+            border: none;
+            color: #888;
+            font-size: 0.8rem;
+            cursor: pointer;
+        }
+        
+        .btn-cerrar:hover {
+            color: var(--text-light);
+        }
+        
+        .hidden {
+            display: none !important;
+        }
+        .footer-principal {
+    background-color: #111111 !important;
+    color: #ffffff;
+    padding: 30px 20px 15px 20px;
+    margin-top: 60px;
+    border-top: 3px solid var(--acento);
+    position: relative;
+    z-index: 10;
+}
+
+.footer-contenido {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+.footer-delgado {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: rgba(10, 10, 10, 0.85);
+    border-top: 1px solid rgba(242, 179, 193, 0.3);
+    color: #888888; 
+    text-align: center;
+    padding: 8px 0; 
+    font-size: 0.75rem; 
+    z-index: 20;
+    backdrop-filter: blur(5px); 
+}
+
+.footer-delgado p {
+    margin: 0;
+    letter-spacing: 0.5px;
+}
+
+.footer-delgado .separador {
+    margin: 0 10px;
+    color: #444444;
+}
+
+.footer-delgado a {
+    color: var(--pink-color); 
+    font-weight: 600;
+    text-decoration: none;
+    transition: color var(--transition-speed);
+}
+
+.footer-delgado a:hover {
+    color: #ffffff; 
+}
+    </style>
+</head>
+<body>
+
+    <div id="loader-screen">
+        <div class="loader-logo-container">
+            <img src="logoo.png" alt="Logo BKR">
+        </div>
+        <div class="progress-bar-container">
+            <div class="progress-fill"></div>
+        </div>
+    </div>
+
+    <div id="main-screen">
+        
+        <video autoplay loop muted playsinline id="bg-video">
+            <source src="FONDO.mp4" type="video/mp4">
+            Tu navegador no soporta videos HTML5.
+        </video>
+
+       <header class="top-header">
+            <div class="main-logo-container">
+                <img src="BKR_.png" alt="Logo BKR">
+            </div>
+
+            <div class="top-right-menu">
+                <i class="fa-brands fa-instagram"></i>
+                <i class="fa-brands fa-tiktok"></i>
+                <i class="fa-solid fa-bars" id="open-menu-btn"></i>
+            </div>
+        </header>
+
+        <div class="left-socials ui-element">
+            <i class="fa-brands fa-spotify"></i>
+            <i class="fa-brands fa-apple"></i>
+            <i class="fa-brands fa-youtube"></i>
+        </div>
+        <div id="side-menu">
+            <i class="fa-solid fa-xmark close-menu-btn" id="close-menu-btn"></i>
+            <nav class="side-nav-links">
+                <a href="Wachiwa.html">WACHIWA</a>
+                <a href="#">SISCO MALICIA</a>
+                <a href="indexxx.html">LOS SANTOS</a>
+                <a href="#">ETERNAL</a>
+                <a href="#">CUARTODESEO</a>
+                <a href="#">BKREATIVE</a>
+            </nav>
+        </div>
+
+        <nav class="bottom-nav">
+            <a href="#">reggaetón</a>
+            <a href="#">freestyle</a>
+            <a href="#">comunidad</a>
+            <a href="#">producción</a>
+            <a href="#">publicidad</a>
+        </nav>
+
+        <div id="modal-overlay">
+            <div class="modal-box">
+                <p>Se parte de la <span>BKR</span><br>para tener acceso a<br>experiencias exclusivas.</p>
+                <button class="btn-unete">ÚNETE AHORA</button>
+                <button class="btn-cerrar" id="close-modal">Cerrar</button>
+            </div>
+        </div>
+
+    </div>
+    <footer class="footer-delgado">
+    <p>Contenido &copy; 2026 BKR. Todos los derechos reservados. <span class="separador">|</span> Desarrollo Web por <a href="#" target="_blank">InnovaConnect</a></p>
+</footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const loaderScreen = document.getElementById('loader-screen');
+            const mainScreen = document.getElementById('main-screen');
+            const closeModalBtn = document.getElementById('close-modal');
+            const modalOverlay = document.getElementById('modal-overlay');
+
+            const openMenuBtn = document.getElementById('open-menu-btn');
+            const closeMenuBtn = document.getElementById('close-menu-btn');
+            const sideMenu = document.getElementById('side-menu');
+
+            setTimeout(() => {
+                loaderScreen.style.opacity = '0';
+                loaderScreen.style.visibility = 'hidden';
+                mainScreen.style.visibility = 'visible';
+                mainScreen.style.opacity = '1';
+                
+                document.getElementById('bg-video').play().catch(error => {
+                    console.log("El autoplay fue bloqueado o el video no cargó:", error);
+                });
+            }, 2600);
+
+            closeModalBtn.addEventListener('click', () => {
+                modalOverlay.classList.add('hidden');
+            });
+
+            openMenuBtn.addEventListener('click', () => {
+                sideMenu.classList.add('open');
+            });
+
+            closeMenuBtn.addEventListener('click', () => {
+                sideMenu.classList.remove('open');
+            });
+
+            document.addEventListener('click', (event) => {
+                if (sideMenu.classList.contains('open') && 
+                    !sideMenu.contains(event.target) && 
+                    !openMenuBtn.contains(event.target)) {
+                    sideMenu.classList.remove('open');
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>

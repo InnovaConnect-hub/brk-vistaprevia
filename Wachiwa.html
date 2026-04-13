@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wachiwa - BKR</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --pink-color: #f2b3c1;
+            --bg-dark: #0a0a0a;
+            --text-light: #ffffff;
+            --transition-speed: 0.4s;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+        }
+
+        body, html {
+            width: 100%;
+            height: 100%;
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            overflow: hidden;
+            background: url('fondo wachiwa.png') center/cover no-repeat;
+        }
+
+        a {
+            text-decoration: none;
+            color: var(--text-light);
+            transition: color 0.3s, text-shadow 0.3s;
+        }
+
+        a:hover {
+            color: var(--pink-color);
+        }
+
+        .ui-element {
+            position: absolute;
+            z-index: 10;
+        }
+
+        .main-logo-container {
+            top: 30px;
+            left: 40px;
+            width: 100px;
+        }
+        .main-logo-container img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .top-right-menu {
+            top: 30px;
+            right: 40px;
+            font-size: 1.5rem;
+            color: var(--pink-color);
+            cursor: pointer;
+        }
+
+        #side-menu {
+            position: fixed;
+            top: 0;
+            right: -320px;
+            width: 280px;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.03); 
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-left: 1px solid rgba(242, 179, 193, 0.2); 
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: -15px 0px 40px rgba(0,0,0,0.5);
+            z-index: 1000;
+            transition: right var(--transition-speed) ease-in-out;
+            display: flex;
+            flex-direction: column;
+            padding: 80px 40px 40px 40px;
+            overflow: hidden; 
+        }
+
+        #side-menu.open {
+            right: 0;
+        }
+
+        #side-menu::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0) 50%, rgba(242, 179, 193, 0.05) 100%);
+            z-index: -1;
+            animation: liquidFlow 10s infinite ease-in-out;
+        }
+
+        @keyframes liquidFlow {
+            0% { transform: scale(1) translate(0, 0); opacity: 0.3; }
+            50% { transform: scale(1.1) translate(-2%, 2%); opacity: 0.5; }
+            100% { transform: scale(1) translate(0, 0); opacity: 0.3; }
+        }
+
+        .close-menu-btn {
+            position: absolute;
+            top: 30px;
+            right: 40px;
+            font-size: 1.5rem;
+            color: var(--pink-color);
+            cursor: pointer;
+        }
+
+        .side-nav-links {
+            display: flex;
+            flex-direction: column;
+            text-align: right;
+            gap: 25px;
+            font-size: 0.95rem;
+            letter-spacing: 1.5px;
+            font-weight: 300;
+        }
+        
+        .side-nav-links a:hover {
+            color: var(--pink-color);
+            text-shadow: 0 0 10px rgba(242, 179, 193, 0.6);
+        }
+
+        .center-profile {
+            position: absolute;
+            top: 48%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            z-index: 5;
+            width: 100%;
+        }
+
+        .profile-img-container {
+            width: 450px;
+            max-width: 80vw;
+            margin-bottom: 15px;
+            animation: float 4s ease-in-out infinite;
+            filter: drop-shadow(0 0 40px rgba(242, 179, 193, 0.5));
+        }
+
+        .profile-img-container img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .artist-name {
+            font-size: 2.5rem;
+            color: var(--pink-color);
+            font-weight: bold;
+            letter-spacing: 3px;
+        }
+
+        .bottom-socials {
+            position: absolute;
+            bottom: 40px;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            font-size: 1.5rem;
+            z-index: 10;
+        }
+        
+        .bottom-socials i {
+            color: var(--pink-color);
+            cursor: pointer;
+            transition: transform 0.2s, text-shadow 0.2s;
+        }
+
+        .bottom-socials i:hover {
+            transform: scale(1.2);
+            text-shadow: 0 0 15px rgba(242, 179, 193, 0.8);
+        }
+        .footer-contenido {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center; 
+    flex-wrap: wrap;
+    gap: 15px;
+    padding-bottom: 15px; 
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+.footer-delgado {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: rgba(10, 10, 10, 0.85); 
+    border-top: 1px solid rgba(242, 179, 193, 0.3); 
+    color: #888888;
+    text-align: center;
+    padding: 8px 0; 
+    font-size: 0.75rem; 
+    z-index: 20;
+    backdrop-filter: blur(5px); 
+}
+
+.footer-delgado p {
+    margin: 0;
+    letter-spacing: 0.5px;
+}
+
+.footer-delgado .separador {
+    margin: 0 10px;
+    color: #444444;
+}
+
+.footer-delgado a {
+    color: var(--pink-color); 
+    font-weight: 600;
+    text-decoration: none;
+    transition: color var(--transition-speed);
+}
+
+.footer-delgado a:hover {
+    color: #ffffff; 
+}
+    </style>
+</head>
+<body>
+
+    <a href="index.html" class="main-logo-container ui-element">
+        <img src="BKR_.png" alt="Logo BKR">
+    </a>
+
+    <div class="top-right-menu ui-element" id="open-menu-btn">
+        <i class="fa-solid fa-bars"></i>
+    </div>
+
+    <div id="side-menu">
+        <i class="fa-solid fa-xmark close-menu-btn" id="close-menu-btn"></i>
+        <nav class="side-nav-links">
+            <a href="wachiwa.html" style="color: var(--pink-color); font-weight: bold;">WACHIWA</a>
+            <a href="#">SISCO MALICIA</a>
+            <a href="#">LOS SANTOS</a>
+            <a href="#">ETERNAL</a>
+            <a href="#">CUARTODESEO</a>
+            <a href="#">BKREATIVE</a>
+        </nav>
+    </div>
+
+    <div class="center-profile">
+        <div class="profile-img-container">
+            <img src="carA DE WACHIWA TRANSPARENTE.png" alt="Wachiwa">
+        </div>
+        <div class="artist-name">wachiwa</div>
+    </div>
+
+    <div class="bottom-socials ui-element">
+        <i class="fa-brands fa-tiktok"></i>
+        <i class="fa-brands fa-instagram"></i>
+        <i class="fa-brands fa-youtube"></i>
+        <i class="fa-brands fa-apple"></i>
+        <i class="fa-brands fa-spotify"></i>
+    </div>
+    <footer class="footer-delgado">
+    <p>Contenido &copy; 2026 BKR. Todos los derechos reservados. <span class="separador">|</span> Desarrollo Web por <a href="#" target="_blank">InnovaConnect</a></p>
+</footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const openMenuBtn = document.getElementById('open-menu-btn');
+            const closeMenuBtn = document.getElementById('close-menu-btn');
+            const sideMenu = document.getElementById('side-menu');
+
+            openMenuBtn.addEventListener('click', () => {
+                sideMenu.classList.add('open');
+            });
+
+            closeMenuBtn.addEventListener('click', () => {
+                sideMenu.classList.remove('open');
+            });
+
+            document.addEventListener('click', (event) => {
+                if (sideMenu.classList.contains('open') && 
+                    !sideMenu.contains(event.target) && 
+                    !openMenuBtn.contains(event.target)) {
+                    sideMenu.classList.remove('open');
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>
