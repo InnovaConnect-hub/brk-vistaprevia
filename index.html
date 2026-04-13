@@ -377,6 +377,49 @@
 .footer-delgado a:hover {
     color: #ffffff; 
 }
+        @media (max-width: 768px) {
+    
+    /* 1. Footer: Apilamos el texto y quitamos el separador para que se vea limpio */
+    .footer-delgado {
+        padding: 12px 15px;
+        font-size: 0.7rem;
+    }
+    .footer-delgado p {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 5px;
+    }
+    .footer-delgado .separador {
+        display: none; 
+    }
+
+    /* 2. Menú inferior: Lo subimos y dejamos que las palabras fluyan si no caben */
+    .bottom-nav {
+        bottom: 75px; /* Lo subimos para que no lo tape el footer de InnovaConnect */
+        gap: 12px; 
+        padding: 0 15px;
+        font-size: 0.75rem;
+        flex-wrap: wrap; /* Permite que bajen de renglón sin salirse de la pantalla */
+    }
+
+    /* 3. Redes sociales laterales: Más pequeñas y pegadas al borde */
+    .left-socials {
+        left: 15px;
+        gap: 15px;
+    }
+    .left-socials i {
+        font-size: 1.3rem; 
+    }
+
+    /* 4. Cabecera: Reducimos un poco el padding superior para ganar espacio */
+    .top-header {
+        padding: 20px 20px;
+    }
+    .main-logo-container {
+        width: 80px; /* Logo un poco más discreto en celular */
+    }
+}
     </style>
 </head>
 <body>
